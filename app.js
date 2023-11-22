@@ -226,6 +226,10 @@ io.sockets.on('connection', function (sock) {
     });
 
     sock.on('secretMode', () => {
+        if (mainSystem.teamSlots["Blue"] == 0 && mainSystem.teamSlots["Red"] == 0) {
+            io.emit('chat-to-clients', `Error. Teams not set`);
+            return;
+        }
         mainSystem.secretMode = true;
         io.emit('secretModeAtClient', mainSystem);
     });
@@ -254,10 +258,14 @@ io.sockets.on('connection', function (sock) {
             io.emit('chat-to-clients', `${data.nickname} - Already have a air drop here`);
             return;
         }
-        if (mainSystem.shipsLocations[data.deployShipMap].length >= 7) {
-            io.emit('chat-to-clients', `${data.nickname} - Maximum ships: 7`);
+        if (mainSystem.shipsLocations[data.deployShipMap].length >= 6) {
+            io.emit('chat-to-clients', `${data.nickname} - Maximum ships: 6`);
             return;
         }
+        // if (mainSystem.allCrates[data.deployShipMap].length >= 4)) {
+        //     io.emit('chat-to-clients', `${data.nickname} - Maximum drops: 4`);
+        //     return;
+        // }
         //console.log("Deploy ok with data: " + data.deployShipCoords + " and " + data.deployShipMap);
         mainSystem.shipsLocations[data.deployShipMap].push(data.deployShipCoords);
         playerObj.deployChance--;
@@ -296,8 +304,12 @@ io.sockets.on('connection', function (sock) {
             io.emit('chat-to-clients', `${data.nickname} - Already have a air drop here`);
             return;
         }
-        if (mainSystem.shipsLocations[data.deployShipMap].length >= 7) {
-            io.emit('chat-to-clients', `${data.nickname} - Maximum ships: 7`);
+        // if (mainSystem.shipsLocations[data.deployShipMap].length >= 7) {
+        //     io.emit('chat-to-clients', `${data.nickname} - Maximum ships: 7`);
+        //     return;
+        // }
+        if (mainSystem.allCrates[data.deployShipMap].length >= 4) {
+            io.emit('chat-to-clients', `${data.nickname} - Maximum drops: 4`);
             return;
         }
         //console.log("Deploy ok with data: " + data.deployShipCoords + " and " + data.deployShipMap);
@@ -398,8 +410,10 @@ io.sockets.on('connection', function (sock) {
             }
             const [ redShipsCount, redShipsDestroyed ] = [mainSystem.shipsLocations["red"].length, mainSystem.allHits["red"].length];
             const [ blueShipsCount, blueShipsDestroyed ] = [mainSystem.shipsLocations["blue"].length, mainSystem.allHits["blue"].length];
+            io.emit('chat-to-clients', `Restore success!`);
             io.emit('chat-to-clients', `Total Red Ships: ${redShipsCount}`);
             io.emit('chat-to-clients', `Total Blue Ships: ${blueShipsCount}`);
+            io.emit('chat-to-clients', `Please refresh!!!`);
             
             
         });
@@ -453,14 +467,14 @@ io.sockets.on('connection', function (sock) {
         io.emit('chat-to-clients', `Red Crates: F${redCratesFound}R${redCratesCount},Blue Crates: F${blueCratesFound}R${blueCratesCount}`);
     });
 
-    sock.on('getAirDrop', () => {
+    sock.on('displayAirDrop', data => {
         
         const [ redCratesCount, redCratesFound ] = [mainSystem.allCrates["red"].length, mainSystem.cratesFound["red"].length];
         const [ blueCratesCount, blueCratesFound ] = [mainSystem.allCrates["blue"].length, mainSystem.cratesFound["blue"].length];
         
         io.emit('chat-to-clients', `Red Crates Found: ${redCratesFound}`);
         io.emit('chat-to-clients', `Blue Crates Found: ${blueCratesFound}`);
-        io.emit('displayAirDrop', { redCratesFound, blueCratesFound});
+        io.emit('displayAirDrop', { redCratesFound, blueCratesFound, data});
     });
 
     sock.on('addChance', data => {
