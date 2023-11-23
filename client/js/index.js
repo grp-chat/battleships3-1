@@ -761,10 +761,10 @@ sock.on('pushLocationsToTCR', data => {
 
 });
 sock.on('displayAirDrop', data => {
-    const gDrv2 = "https://drive.google.com/file/d/1xPhqS8Dp3n2lTg5Wo6JczNBiyNWxvADo/view?usp=sharing";
     const gDrv1 = "https://drive.google.com/file/d/1xc4upf6KheKfludPmsZlC8oFEHOgO1lG/view?usp=sharing";
-    const gDrv3 = "https://drive.google.com/file/d/11X4SeC0b0Juzq4bm-Eqra18GnuZxUeQj/view?usp=sharing";
-    const gDrv4 = "https://drive.google.com/file/d/1eo_y6OpA5ovOmRw9L26PoDCA4Il3nA1D/view?usp=sharing";
+    const gDrv2 = "https://drive.google.com/file/d/1xPhqS8Dp3n2lTg5Wo6JczNBiyNWxvADo/view?usp=sharing";
+    const gDrv3 = "https://drive.google.com/file/d/1eo_y6OpA5ovOmRw9L26PoDCA4Il3nA1D/view?usp=sharing";
+    const gDrv4 = "https://drive.google.com/file/d/11X4SeC0b0Juzq4bm-Eqra18GnuZxUeQj/view?usp=sharing";
 
     const settings = {
         1: gDrv1,
